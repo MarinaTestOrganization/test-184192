@@ -15,10 +15,10 @@ db_connection = None
 def vuln_user_select_by_id_v0():
     """Vulnerable user lookup by ID"""
     param = request.args.get("id", "")
-    query = f"SELECT id, username, email, password, role, status FROM users WHERE id = {param}"
+    query = "SELECT id, username, email, password, role, status FROM users WHERE id = ?"
     try:
         cursor = db_connection.cursor()
-        cursor.execute(query)
+        cursor.execute(query, (param,))
         rows = cursor.fetchall()
         result = [str(row) for row in rows]
         return Response("\n".join(result), mimetype="text/plain")
